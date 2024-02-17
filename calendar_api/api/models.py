@@ -13,6 +13,7 @@ class Event(models.Model):
     end_time = models.TimeField()
     location = models.CharField(max_length=250)
     guests = models.ManyToManyField(User, related_name="invited_events")
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
