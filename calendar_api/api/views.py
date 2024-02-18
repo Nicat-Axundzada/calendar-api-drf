@@ -7,12 +7,21 @@ from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 
-class EventView(APIView):
+class EventAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        guest_ids = request.data.get('guest_ids', [])
-        events = Event.objects.filter(guests__id__in=guest_ids).distinct()
+        # guests_id = request.data.get('guest_ids', [])
+        guests_id = request.query_params.get('guest_ids')
+        if guests_id:
+            guests_id_list = [int(guest_id)
+                              for guest_id in guests_id.split(',')]
+            events = Event.objects.filter(
+                guests__id__in=guests_id_list, is_active=True).distinct()
+        elif guests_id == None:
+            events = Event.objects.filter(is_active=True)
+        else:
+            events = []
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
@@ -24,12 +33,12 @@ class EventView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class EventDetailView(APIView):
+class EventDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self, pk):
         try:
-            return Event.objects.get(pk=pk)
+            return Event.objects.get(pk=pk, is_active=True)
         except Event.DoesNotExist:
             raise status.HTTP_404_NOT_FOUND
 
