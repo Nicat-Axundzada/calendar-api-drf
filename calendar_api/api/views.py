@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from django.http import Http404
 # Create your views here.
 
 
@@ -40,7 +41,7 @@ class EventDetailAPIView(APIView):
         try:
             return Event.objects.get(pk=pk, is_active=True)
         except Event.DoesNotExist:
-            raise status.HTTP_404_NOT_FOUND
+            raise Http404
 
     def get(self, request, pk):
         event = self.get_object(pk)
