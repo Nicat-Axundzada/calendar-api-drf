@@ -5,12 +5,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
+from drf_spectacular.utils import extend_schema
 # Create your views here.
 
 
 class EventAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(responses=EventSerializer)
     def get(self, request):
         # guests_id = request.data.get('guest_ids', [])
         guests_id = request.query_params.get('guest_ids')
@@ -26,6 +28,7 @@ class EventAPIView(APIView):
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
+    @extend_schema(responses=EventSerializer)
     def post(self, request):
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
@@ -37,17 +40,20 @@ class EventAPIView(APIView):
 class EventDetailAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(responses=EventSerializer)
     def get_object(self, pk):
         try:
             return Event.objects.get(pk=pk, is_active=True)
         except Event.DoesNotExist:
             raise Http404
 
+    @extend_schema(responses=EventSerializer)
     def get(self, request, pk):
         event = self.get_object(pk)
         serializer = EventSerializer(event)
         return Response(serializer.data)
 
+    @extend_schema(responses=EventSerializer)
     def put(self, request, pk):
         event = self.get_object(pk)
         serializer = EventSerializer(event, data=request.data)
@@ -56,6 +62,7 @@ class EventDetailAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(responses=EventSerializer)
     def delete(self, request, pk):
         event = self.get_object(pk)
         event.is_active = False

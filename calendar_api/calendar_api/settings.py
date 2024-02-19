@@ -42,8 +42,22 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     # third-party apps
     "rest_framework",
+    "drf_spectacular",
 
 ]
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'DRF Calendar API',
+    'DESCRIPTION': 'Calendar API something like Google calendar',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
