@@ -1,5 +1,21 @@
-env/
 __pycache__/
+
+# Django stuff:
+*.log
+local_settings.py
 db.sqlite3
-.env
+db.sqlite3-journal
 schema.yml
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/

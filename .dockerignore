@@ -1,0 +1,25 @@
+# Git
+.git 
+.gitignore
+
+# Docker
+docker-compose.yml
+Dockerfile
+.docker
+.dockerignore
+
+# Python
+calendar_api/__pycache__
+calendar_api/*/__pycache__
+calendar_api/*/*/__pycache__
+calendar_api/*/*/*/__pycache__
+.env/
+.venv/
+venv/
+
+# Django stuff:
+*.log
+
+# VS Code
+.vscode/
+
