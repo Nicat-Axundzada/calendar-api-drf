@@ -1,7 +1,11 @@
 version: "3.9"
 
 services:
+  redis:
+    image: redis:7.0.11-alpine
+
   app:
+    container_name: calendar_api
     build:
       context: .
     ports:
@@ -13,7 +17,10 @@ services:
              python manage.py migrate &&  
              python manage.py runserver 0.0.0.0:8000"
 
-    # environment:
+    environment:
+      - SECRET_KEY=dfjsklm90i4rn
+      - DEBUG=1
+      - ALLOWED_HOSTS=localhost,127.0.0.1
     #   - DB_HOST=
     #   - DB_NAME=
     #   - DB_USER=
@@ -21,6 +28,7 @@ services:
     #   - DB_PORT=
 
     depends_on:
+      - redis
       - db
     env_file:
       - .env

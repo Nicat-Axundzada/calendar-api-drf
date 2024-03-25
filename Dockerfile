@@ -1,12 +1,16 @@
 FROM python:3.12.2-alpine3.19
 LABEL maintainer="Nijat Akhundzada"
 
-ENV PYTHONUNBUFFERED 1
-
-COPY ./requirements.txt /tmp/requirements.txt
 RUN mkdir /calendar_api
 COPY ./calendar_api /calendar_api/
 WORKDIR /calendar_api
+
+# prevent Python from writing .pyc files
+ENV PYTHONDONTWRITEBYTECODE 1
+# ensure Python output is sent directly to the terminal without buffering
+ENV PYTHONUNBUFFERED 1
+
+COPY ./requirements.txt /tmp/requirements.txt
 EXPOSE 8000
 
 RUN python -m venv /py && \
