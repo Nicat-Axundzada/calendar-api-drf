@@ -50,6 +50,7 @@ services:
     container_name: celery
     build:
       context: .
+    command: celery --app=calendar_api worker -l INFO
     volumes:
       - ./calendar_api:/calendar_api
     environment:
