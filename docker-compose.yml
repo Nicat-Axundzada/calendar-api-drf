@@ -46,5 +46,18 @@ services:
     env_file:
       - .env
 
+  celery:
+    container_name: celery
+    build:
+      context: .
+    volumes:
+      - ./calendar_api:/calendar_api
+    environment:
+      - SECRET_KEY=dfjsklm90i4rn
+      - DEBUG=1
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+    depends_on:
+      - redis
+
 volumes:
   dev-db-data:
