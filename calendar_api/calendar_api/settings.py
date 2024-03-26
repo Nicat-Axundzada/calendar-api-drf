@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
+from datetime import timedelta
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -149,3 +151,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get(
     'CELERY_BACKEND', 'redis://redis:6379/0')
+
+
+CELERY_BEAT_SCHEDULE = {
+    'cleanup_inactive_events': {
+        'task': 'api.tasks.cleanup_inactive_events',
+        'schedule': timedelta(years=5),  # Run every 5 years
+    },
+    'cleanup_expired_events': {
+        'task': 'api.tasks.cleanup_expired_events',
+        'schedule': timedelta(years=1),  # Run every year
+    },
+    # Add more tasks with their schedules as needed
+}
