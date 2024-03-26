@@ -14,17 +14,13 @@ class EventAPIView(APIView):
 
     @extend_schema(responses=EventSerializer)
     def get(self, request):
-        # guests_id = request.data.get('guest_ids', [])
-        guests_id = request.query_params.get('guest_ids')
+        guests_id = request.data.get('guest_ids', [])
         if guests_id:
             guests_id_list = [int(guest_id)
-                              for guest_id in guests_id.split(',')]
+                              for guest_id in guests_id]
             events = Event.objects.filter(
                 guests__id__in=guests_id_list, is_active=True).distinct()
-        elif guests_id == None:
-            events = Event.objects.filter(is_active=True)
-        else:
-            events = []
+
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
