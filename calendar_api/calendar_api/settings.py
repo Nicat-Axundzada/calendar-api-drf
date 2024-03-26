@@ -156,11 +156,11 @@ CELERY_RESULT_BACKEND = os.environ.get(
 CELERY_BEAT_SCHEDULE = {
     'cleanup_inactive_events': {
         'task': 'api.tasks.cleanup_inactive_events',
-        'schedule': timedelta(years=5),  # Run every 5 years
+        'schedule': timedelta(days=(365 * 5 + 1)),  # Run every 5 years
     },
     'cleanup_expired_events': {
         'task': 'api.tasks.cleanup_expired_events',
-        'schedule': timedelta(years=1),  # Run every year
+        'schedule': timedelta(days=365),  # Run every year
     },
     # Add more tasks with their schedules as needed
 }
