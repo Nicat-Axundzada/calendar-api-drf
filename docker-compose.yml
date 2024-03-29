@@ -3,6 +3,13 @@ version: "3.9"
 services:
   redis:
     image: redis:7.0.11-alpine
+    restart: always
+    expose:
+      - 6380
+    ports:
+      - "6380:6380"
+    volumes:
+      - redis_data:/data
 
   app:
     container_name: calendar_api
@@ -62,3 +69,4 @@ services:
 
 volumes:
   dev-db-data:
+  redis_data:
