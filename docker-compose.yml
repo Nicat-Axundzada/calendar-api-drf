@@ -4,10 +4,8 @@ services:
   redis:
     image: redis:7.0.11-alpine
     restart: always
-    expose:
-      - 6380
     ports:
-      - "6380:6380"
+      - "6379:6380"
     volumes:
       - redis_data:/data
 
@@ -50,6 +48,9 @@ services:
     #   - POSTGRES_USER=devuser
     #   - POSTGRES_PASSWORD=changeme
 
+    ports:
+      - "5432:5432"
+
     env_file:
       - .env
 
@@ -66,6 +67,7 @@ services:
       - ALLOWED_HOSTS=localhost,127.0.0.1
     depends_on:
       - redis
+      - db
 
 volumes:
   dev-db-data:
